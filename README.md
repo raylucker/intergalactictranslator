@@ -36,7 +36,12 @@ While it run, the application will ask to input an input that will be translated
 * if the input contains any key that's not stated in the library section above, the application will return the "I have no idea what you are talking about" as well as the unknown input format.
 
 ## Deployment
+### Environment
+* JDK 10
+* Spring Framework 5
+
 ### Built With
+* Faceted Project Validation Builder
 * Java Builder 
 * Maven Project Builder
 * Spring Boot Validations Builder
