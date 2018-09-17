@@ -1,3 +1,4 @@
+# Intergalactic Translator
 This application is a translator for an intergalactic market transaction. Written in java/spring.
 
 ## Getting Started
