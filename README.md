@@ -11,7 +11,7 @@ Just download or clone this repository to your local java/spring environment
 The project can be run from the spring application itself by importing the project into spring workspace and run the application as a java application.
 While it run, the application will ask to input an input that will be translated to expected output below. The input format can also be found in the test input section below.
 
-## Library
+### Library
 * glob is I
 * prok is V
 * pish is X
