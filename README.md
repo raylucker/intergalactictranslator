@@ -48,4 +48,4 @@ While it run, the application will ask to input an input that will be translated
 * Spring Project Builder
 
 ## Authors
-* **Trisno Raynaldy Panjaitan** | [Github](https://github.com/raylucker) | [Bitbucket](https://bitbucket.org/raypanjaitan/)
+* **Trisno Raynaldy Panjaitan** - [Github](https://github.com/raylucker) | [Bitbucket](https://bitbucket.org/raypanjaitan/)
