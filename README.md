@@ -32,7 +32,7 @@ While it run, the application will ask to input an input that will be translated
 * I have no idea what you are talking about
 
 ### Error Handling
-* Letter case wont be a problem in this application, we handle any form of letter case from the input. The application will give the expected output with the same format as the user inputted.
+* Letter case wont be a problem in this application, we handle any form of letter case from the input. The application will give the expected output with the same format as the user input.
 * if the input contains any key that's not stated in the library section above, the application will return the "I have no idea what you are talking about" as well as the unknown input format.
 
 ## Deployment
@@ -48,4 +48,4 @@ While it run, the application will ask to input an input that will be translated
 * Spring Project Builder
 
 ## Authors
-* **Trisno Raynaldy Panjaitan** [Github](https://github.com/raylucker)
+* **Trisno Raynaldy Panjaitan** [Github](https://github.com/raylucker) [Bitbucket](https://bitbucket.org/raypanjaitan/)
