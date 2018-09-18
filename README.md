@@ -9,7 +9,7 @@ Just download or clone this repository to your local java/spring environment
 
 ## Running The Test
 The project can be run from the spring application itself by importing the project into spring workspace and run the application as a java application.
-While it run, the application will ask to input an input that will be translated to expected output below. The input format can also be found in the test input section below.
+While it run, the application will ask to input an entry that will be translated to expected output below. The input format can also be found in the test input section below.
 
 ### Library
 * glob is I
