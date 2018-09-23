@@ -45,7 +45,7 @@ public class Translator{
 					else
 						reply = reply + errorReturn;
 					
-					reply = reply + splitted[0] + " has been set as " +splitted[2]+ "\n";
+//					reply = reply + splitted[0] + " has been set as " +splitted[2]+ "\n";
 				}else if(splitted[splitted.length-3].toLowerCase().equals("is") && !splitted[0].toLowerCase().equals("how")) {
 					int valueLength = splitted.length-4;
 					String unit = splitted[valueLength];
