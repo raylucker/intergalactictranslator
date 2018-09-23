@@ -14,7 +14,7 @@ While it run, the application will ask to input an entry that will be translated
 ### Input Example
 The application can process single or multiple inputs in one batch. The inputs can be seperated only by dot, question mark and exclamation mark.
 For example:
-glob is I. prok is V. pish is X. tegj is L. glob glob Silver is 34 Credits. glob prok Gold is 57800 Credits. pish pish Iron is 3910 Credits. how much is pish tegj glob glob ?. how many Credits is glob prok Silver ?. how many Credits is glob prok Gold ?. how many Credits is glob prok Iron ?. how much wood could a woodchuck chuck if a woodchuck could chuck wood !
+glob is I. prok is V. pish is X. tegj is L. glob glob Silver is 34 Credits. glob prok Gold is 57800 Credits. pish pish Iron is 3910 Credits. how much is pish tegj glob glob ? how many Credits is glob prok Silver ? how many Credits is glob prok Gold ? how many Credits is glob prok Iron ? how much wood could a woodchuck chuck if a woodchuck could chuck wood !
 
 ### Expected Output
 To make it easier to read, the output will be serve in several lines, depends on the quantity of the input. Below is the output of the input example.
