@@ -32,6 +32,7 @@ errorMessage = "I have no idea what you are talking about".
 * If the statement contains any key that's not stated earlier, the application will return the the errorMessage as well as the unknown input format.
 * A statement that assign a key to a value that's not a roman numeral symbols will end up to an error with errorMessage.
 * If the statement contains a key of roman numeral that has not been set, the application will return the errorMessage.
+* Input the word "exit" to terminate the program.
 
 ## Deployment
 ### Environment
