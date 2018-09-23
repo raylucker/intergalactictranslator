@@ -22,6 +22,8 @@ public class Translator{
 //	public static String[] romanSymbol = {"I","V","X","L", "C", "D", "M"};
 	private static final Set<String> romanSymbols = new HashSet<String>(Arrays.asList(
 			new String[] {"I","V","X","L", "C", "D", "M"}));
+	private static final Set<String> illegal = new HashSet<String>(Arrays.asList(
+			new String[] {"VV","LL","DD","IIII", "XXXX", "CCCC", "MMMMM"}));
    	public String questionType="credit";
 	Dictionary dictionary = new Dictionary();
     
@@ -37,13 +39,14 @@ public class Translator{
 			alienWords[i] = alienWords[i].trim();
 			String[] splitted = alienWords[i].split(" ");
 			if(alienWords[i].length() > 5 && splitted.length > 2) {
-				if(splitted[1].equals("is")) {
+				if(splitted[1].toLowerCase().equals("is")) {
 					if(romanSymbols.contains(splitted[2]))
 						dictionary.setLib(splitted[0].toLowerCase(), splitted[2].toUpperCase());
 					else
 						reply = reply + errorReturn;
-//					reply = reply + splitted[0] + " has been set as " +splitted[2]+ "\n";
-				}else if(splitted[splitted.length-3].equals("is") && !splitted[splitted.length-4].equals("credits")) {
+					
+					reply = reply + splitted[0] + " has been set as " +splitted[2]+ "\n";
+				}else if(splitted[splitted.length-3].toLowerCase().equals("is") && !splitted[0].toLowerCase().equals("how")) {
 					int valueLength = splitted.length-4;
 					String unit = splitted[valueLength];
 					
@@ -118,59 +121,87 @@ public class Translator{
     	 	unit = splitted[splitted.length-1];
     	 	splitted = Arrays.copyOf(splitted, splitted.length-1);
         }
-    	
+        
     	for (int i = 0; i < splitted.length; i++) {
     			String value = dictionary.getLib(splitted[i]);
-    			System.out.println(">"+value);
+    			
         		if(value.equals("404"))
         			return "error";
         		else
         			romanNum = romanNum + value;
 		}
         
+    	
         Double decimal = 0.0;
         int lastNumber = 0;
+        String lastSymbol = "";
+        String noStack = "";
+
         for (int x = romanNum.length() - 1; x >= 0 ; x--) {
             char convertToDecimal = romanNum.charAt(x);
+            if(lastSymbol.equals(String.valueOf(convertToDecimal)))
+            	noStack = noStack + convertToDecimal;
+            else
+            	noStack = String.valueOf(convertToDecimal);
+            
+            if(illegal.contains(noStack))
+            	return "error";
 
             switch (convertToDecimal) {
                 case 'M':
+                	if(!lastSymbol.equals("C") && !lastSymbol.equals("") && lastNumber<1000)
+                		return "error";
                     decimal = processDecimal(1000, lastNumber, decimal);
                     lastNumber = 1000;
+                    lastSymbol = "M";
                     break;
 
                 case 'D':
+                	if(!lastSymbol.equals("C") && !lastSymbol.equals("") && lastNumber<500)
+                		return "error";
                     decimal = processDecimal(500, lastNumber, decimal);
                     lastNumber = 500;
+                    lastSymbol = "D";
                     break;
 
                 case 'C':
+                	if(!lastSymbol.equals("X") && !lastSymbol.equals("") && lastNumber<100)
+                		return "error";
                     decimal = processDecimal(100, lastNumber, decimal);
                     lastNumber = 100;
+                    lastSymbol = "C";
                     break;
 
                 case 'L':
+                	if(!lastSymbol.equals("X") && !lastSymbol.equals("") && lastNumber<50)
+                		return "error";
                     decimal = processDecimal(50, lastNumber, decimal);
                     lastNumber = 50;
+                    lastSymbol = "L";
                     break;
 
                 case 'X':
+                	if(lastSymbol.equals("V") && !lastSymbol.equals("") && lastNumber<10)
+                		return "error";
                     decimal = processDecimal(10, lastNumber, decimal);
                     lastNumber = 10;
+                    lastSymbol = "X";
                     break;
 
                 case 'V':
                     decimal = processDecimal(5, lastNumber, decimal);
                     lastNumber = 5;
+                    lastSymbol = "V";
                     break;
 
                 case 'I':
                     decimal = processDecimal(1, lastNumber, decimal);
                     lastNumber = 1;
+                    lastSymbol = "I";
                     break;
             }
         }
-
+        
         if(questionType.equals("credit")) {
 			Double multiplier = dictionary.getStuffLib(unit.toLowerCase());
 			if(multiplier==0.0)
