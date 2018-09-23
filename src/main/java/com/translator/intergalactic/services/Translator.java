@@ -5,6 +5,7 @@ import com.translator.intergalactic.entity.*;
 
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.Set;
@@ -17,13 +18,13 @@ import java.util.Arrays;
  */
 @Service
 public class Translator{
-	private static String errorReturn = "I have no idea what you are talking about.";
+	private static String errorReturn = "I have no idea what you are talking about.\n";
+//	public static String[] romanSymbol = {"I","V","X","L", "C", "D", "M"};
+	private static final Set<String> romanSymbols = new HashSet<String>(Arrays.asList(
+			new String[] {"I","V","X","L", "C", "D", "M"}));
    	public String questionType="credit";
 	Dictionary dictionary = new Dictionary();
     
-   	int value(char x) {
-   		return 1;
-   	}
     public String translate() {
     	String reply = "";
 		System.out.println("================= World's Favorite Translator ==================");
@@ -37,16 +38,17 @@ public class Translator{
 			String[] splitted = alienWords[i].split(" ");
 			if(alienWords[i].length() > 5 && splitted.length > 2) {
 				if(splitted[1].equals("is")) {
-					dictionary.setLib(splitted[0].toLowerCase(), splitted[2].toUpperCase());
+					if(romanSymbols.contains(splitted[2]))
+						dictionary.setLib(splitted[0].toLowerCase(), splitted[2].toUpperCase());
+					else
+						reply = reply + errorReturn;
 //					reply = reply + splitted[0] + " has been set as " +splitted[2]+ "\n";
 				}else if(splitted[splitted.length-3].equals("is") && !splitted[splitted.length-4].equals("credits")) {
 					int valueLength = splitted.length-4;
 					String unit = splitted[valueLength];
 					
-					for(int ii=0;ii<valueLength;ii++) {
-//						String value = dictionary.getLib(splitted[ii]);
+					for(int ii=0;ii<valueLength;ii++)
 						plainWords = plainWords + splitted[ii] + " ";
-					}
 
 					String translator = translator(plainWords.trim(), "notCredit");
 
@@ -57,7 +59,7 @@ public class Translator{
 						dictionary.setStuffLib(unit.toLowerCase(), creditValue/Double.parseDouble(translator));
 //						reply = reply + "The value of "+ unit + " has been set!\n";
 					}
-				}else if(alienWords[i].toLowerCase().substring(0, 11).equals("how much is")){
+				}else if(alienWords[i].toLowerCase().substring(0, 11).equals("how much is") && splitted.length > 3){
 					plainWords = statementor(alienWords[i], "notCredit");
 					String translator = translator(plainWords, "notCredit");
 					
@@ -67,32 +69,28 @@ public class Translator{
 						reply = reply + plainWords.trim() + " is " + translator + "\n";
 //			 	}else if(alienWords[i].trim().toLowerCase().substring(0,19).equals("how many credits is")){
 			 	}else if(alienWords[i].trim().toLowerCase().substring(0,8).equals("how many")){
-//					plainWords = statementor(alienWords[i], "credit");
-//					String unit = splitted[splitted.length-1];
 					String translator = translator(alienWords[i], "credit");
-//					Double multiplier = dictionary.getStuffLib(unit.toLowerCase());
-//					Double value = Double.parseDouble(translator)*multiplier;
-//					reply = reply + plainWords.trim() + " " + unit + " is " + value + " Credits\n";
-					reply = reply + translator;
-				}else if(alienWords[i].toLowerCase().substring(0, 11).equals("exit")) {
-					return "exit";
+					if(translator.equals("error"))
+						reply = reply + errorReturn;
+					else
+						reply = reply + translator;
 				}else {
 					reply = reply + errorReturn;
 				}
 			}else {
-				reply = reply + "invalid qustions";
+				if(alienWords[i].toLowerCase().substring(0, 4).equals("exit"))
+					return "exit";
+				
+				reply = reply + errorReturn;
 			}
 		}
 		
 		return reply;
-		
 	}
     
     String statementor(String plainWords, String qType) {
     	String[] okWords = plainWords.split(" ");
-		if(qType.equals("is")) {
-			
-		}else if(qType.equals("notCredit")) {
+    	if(qType.equals("notCredit")) {
 			plainWords = plainWords.substring(12, plainWords.length());
 		}else if(qType.equals("credit")) {
 			int start = 0;
@@ -101,9 +99,11 @@ public class Translator{
 				if(okWords[i].equals("is"))
 					start = i+1;
 			}
+			
 			for(int i=start;i<okWords.length;i++)
 				plainWords = plainWords + okWords[i] + " ";
 		}
+    	
     	return plainWords.trim();
     }
     
@@ -113,18 +113,19 @@ public class Translator{
 			alienWords = statementor(alienWords, "credit");
         
 	 	String[] splitted = alienWords.split(" ");
-
+	 	
         if(questionType.equals("credit")) {
     	 	unit = splitted[splitted.length-1];
     	 	splitted = Arrays.copyOf(splitted, splitted.length-1);
         }
     	
     	for (int i = 0; i < splitted.length; i++) {
-        	try{
-        		romanNum = romanNum + dictionary.getLib(splitted[i]);
-        	}catch(NullPointerException e) {
-        		romanNum = null;
-        	}
+    			String value = dictionary.getLib(splitted[i]);
+    			System.out.println(">"+value);
+        		if(value.equals("404"))
+        			return "error";
+        		else
+        			romanNum = romanNum + value;
 		}
         
         Double decimal = 0.0;
@@ -172,7 +173,11 @@ public class Translator{
 
         if(questionType.equals("credit")) {
 			Double multiplier = dictionary.getStuffLib(unit.toLowerCase());
-        	decimal = decimal*multiplier;
+			if(multiplier==0.0)
+				return "error";
+			else
+				decimal = decimal*multiplier;
+			
 			return alienWords.trim() + " " + unit + " is " + decimal + " Credits\n";
         }
         
@@ -180,10 +185,9 @@ public class Translator{
     }
 
     public static Double processDecimal(int decimal, int lastNumber, Double lastDecimal) {
-        if (lastNumber > decimal) {
+        if (lastNumber > decimal)
             return lastDecimal - decimal;
-        } else {
+        else
             return lastDecimal + decimal;
-        }
     }
 }
