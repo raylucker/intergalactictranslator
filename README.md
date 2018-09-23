@@ -24,7 +24,7 @@ glob prok Gold is 57800 Credits
 glob prok Iron is 782 Credits
 I have no idea what you are talking about
 
-### Error Handling
+### Error Handling & Rules
 errorMessage = "I have no idea what you are talking about".
 * The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more. (They may appear four times if the third and fourth are separated by a smaller value, such as XXXIX). "D", "L", and "V" can never be repeated.
 * "I" can be subtracted from "V" and "X" only. "X" can be subtracted from "L" and "C" only. "C" can be subtracted from "D" and "M" only. "V", "L", and "D" can never be subtracted.
@@ -36,7 +36,7 @@ errorMessage = "I have no idea what you are talking about".
 ## Deployment
 ### Environment
 * JDK 10
-* Spring Framework 5
+* Spring Framework 3
 
 ### Built With
 * Faceted Project Validation Builder
